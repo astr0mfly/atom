@@ -1,0 +1,11 @@
+- name: setup xmake
+  # You may pin to the exact commit or the version.
+  # uses: xmake-io/github-action-setup-xmake@9b727acdccf5e41bdf2712934983855d8ce146de
+  uses: xmake-io/github-action-setup-xmake@v1
+  with:
+    # The version to use. Should be a semver range or 'latest'. Or use [{repository}#]branch@{branch_name} to select a branch.
+    xmake-version: # default is latest
+    # Directory to cache xmake in. This folder will go under $GITHUB_HOME (I.e. build dir) and be cached using @actions/cache.
+    actions-cache-folder: # optional, default is 
+    # The actions cache key.
+    actions-cache-key: # optional, default is 
