@@ -1,22 +1,5 @@
-target("atom_lib_math")
-    set_kind("static")
-    set_basename("atom_lib")
-    add_files("**.c", "**.cc", "**.cpp", "**.cxx")
-    if is_plat("linux", "macosx") then
-        add_options("with_backtrace")
-    end
-    if not is_plat("windows") then
-        add_options("fpic")
-    end
-    set_configvar("ATOM_SHARED", 0)
-    add_configfiles("../../include/library/config.h.in", {filename = "../../include/library/config.h"})
-    add_includedirs("..", {public = true})
-
-target("atom_dyc_math")
-    set_kind("shared")
-    set_basename("atom_dyc")
-
-    add_files("**.c", "**.cc", "**.cpp", "**.cxx")
+target("atom_math")
+    add_files("**.cpp")
     if is_plat("linux", "macosx") then
         add_options("with_backtrace")
     end
@@ -24,9 +7,22 @@ target("atom_dyc_math")
         add_options("fpic")
     end
 
-    set_symbols("debug", "hidden")
-    add_defines("BUILDING_ATOM_SHARED")
-    set_configvar("ATOM_SHARED", 1)
+    if is_mode("debug") then
+        set_kind("shared")
+        set_basename("atom_dyc_$(mode)_$(arch)")
+        set_configvar("ATOM_SHARED", 1)
+        add_defines("BUILDING_ATOM_SHARED")
+        set_symbols("debug", "hidden")
+    else
+        set_kind("static")
+        set_basename("atom_lib_$(mode)_$(arch)")
+        set_configvar("ATOM_SHARED", 0)
+    end
 
-    add_configfiles("../../include/library/config.h.in", {filename = "../../include/library/config.h"})
+    set_configdir("..")
+    add_configfiles("config.h.in", {filename = "library/config.h"})
+
     add_includedirs("..", {public = true})
+
+    add_installfiles("*.h", {prefixdir = "include/library"})
+    add_installfiles("*.hpp)", {prefixdir = "include/library"})

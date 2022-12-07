@@ -40,6 +40,8 @@ if is_mode("debug") then
     add_defines("DEBUG")
 end
 
+set_warnings("all", "error")
+
 option("with_backtrace")
     set_default(false)
     set_showmenu(true)

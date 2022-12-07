@@ -1,7 +1,7 @@
 target("atom_hello")
     set_kind("binary")
     set_basename("atom")
-    add_files("**.c", "**.cc", "**.cpp")
+    add_files("**.cpp")
     if is_plat("linux", "macosx") then
         add_options("with_backtrace")
     end
