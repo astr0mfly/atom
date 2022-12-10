@@ -14,10 +14,11 @@ target("atom_hello")
     end
     set_exceptions("cxx")
 
+
+    set_installdir("$(projectdir)/output/$(mode)")
+    set_rundir("$(projectdir)/output/$(mode)/bin/")
+    
     if is_mode("debug") then
         add_defines("BUILDING_ATOM_SHARED")
     end
-    set_installdir("$(projectdir)/output/$(mode)")
-    set_rundir("$(projectdir)/output/$(mode)/bin/")
-
     add_deps("atom_math")

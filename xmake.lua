@@ -70,4 +70,4 @@ add_includedirs("include")
 add_installfiles("(include/**)", {prefixdir = ""})
 
 -- include sub-projects
-includes("src")
+includes("src", "dfx")
