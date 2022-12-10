@@ -1,1 +1,1 @@
-includes("bench", "unitest")
+includes("bench", "unitest", "meta")

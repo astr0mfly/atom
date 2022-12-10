@@ -4,10 +4,12 @@ option("with_lib")
     end
     add_deps("atom_math")
 
-target("unitest")
+target("meta")
     set_kind("binary")
     set_default(false)
-    set_options("with_lib")
+    --set_options("with_lib")
     add_files("*.cpp")
-    
+    if is_plat("windows") then
+        add_cxflags("/Zc:preprocessor")
+    end
     add_includedirs("$(projectdir)/dfx/internal", {public = true})
