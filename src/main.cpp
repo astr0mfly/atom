@@ -1,7 +1,11 @@
 #include <iostream>
 
+#include "library/math.hpp"
+
 int main()
 {
-    std::cout << "hello world!" << std::endl;
+    auto res = add(1, 2);
+    std::cout << "gen answer " << res << std::endl;
+
     return 0;
 }

@@ -1,1 +1,1 @@
-#define ATOM_SHARED 0
+#define ATOM_SHARED 1

@@ -17,8 +17,11 @@ if is_plat("windows") then
     if is_mode("debug") then
         set_optimize("none")  -- faster: -O2  fastest: -Ox  none: -O0
         set_runtimes("MDd")
-        add_cxflags("/EHa")
-        add_ldflags("/SAFESEH:YES")
+        add_cxflags("/EHa", {force = true})
+        if is_arch("x86") then
+          add_ldflags("/SAFESEH", {force = true})
+        end
+        set_symbols("debug, edit")
     else
         set_optimize("fastest")  -- faster: -O2  fastest: -Ox  none: -O0
         set_runtimes("MT")
