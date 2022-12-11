@@ -1,6 +1,6 @@
 #define CATCH_CONFIG_MAIN
 #define CATCH_CONFIG_ENABLE_BENCHMARKING
-#include "catch.hpp"
+#include "catch2/catch.hpp"
 
 std::uint64_t Fibonacci(std::uint64_t number) {
     return number < 2 ? 1 : Fibonacci(number - 1) + Fibonacci(number - 2);
