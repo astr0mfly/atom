@@ -1,0 +1,53 @@
+name: linux
+on:
+  push:
+    branches:    
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  build_linux:
+    name: build_and_test in linux
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: use xmake
+        uses: xmake-io/github-action-setup-xmake@v1
+        with:
+          xmake-version: latest
+
+      - name: build in debug
+        run: |
+          xmake config -m debug
+          xmake build
+          xmake build mock
+          xmake r mock
+
+      - name: build in dfx
+        run: |
+          xmake config -m relase
+          xmake
+          xmake build unit_test
+          xmake r unit_test
+          xmake build bench
+          xmake r bench
+          xmake build meta
+          xmake r meta
+
+      - name: install
+        run: |
+          xmake install -a
+      # - name: Archive code coverage results
+      #   uses: actions/upload-artifact@v3
+      #   with:
+      #     name: code-coverage-report
+      #     path: output/test_linux/code-coverage.html
