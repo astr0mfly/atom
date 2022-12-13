@@ -382,6 +382,8 @@ FIXTURE(TestInheritsAggregateAlgo)
             object.Holder<int>::field = -5;
             object.Holder<short>::field = 2;
             object.Holder<char>::field = 'a';
+
+            (void)object;
         }
     };
 

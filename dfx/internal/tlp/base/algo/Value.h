@@ -27,6 +27,6 @@ struct Value<EmptyType>
 
 TLP_NS_END
 
-#define __value(...)    TLP_NS::Value<__VA_ARGS__>::Result
+#define __value_type(...)    TLP_NS::Value<__VA_ARGS__>::Result
 
 #endif
