@@ -41,6 +41,11 @@ jobs:
 
     needs: build_mock
     steps:
+      - uses: actions/checkout@v3
+      - uses: xmake-io/github-action-setup-xmake@v1
+        with:
+          xmake-version: latest
+      
       - name: build in dfx
         run: |
           xmake config -m relase ${{ matrix.arch }}
@@ -62,11 +67,8 @@ jobs:
     needs: [build_mock, build_dfx]
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-
-      - name: use xmake
-        uses: xmake-io/github-action-setup-xmake@v1
+      - uses: actions/checkout@v3
+      - uses: xmake-io/github-action-setup-xmake@v1
         with:
           xmake-version: latest
 
@@ -86,6 +88,10 @@ jobs:
     needs: build_debug
 
     steps:
+      - uses: actions/checkout@v3
+      - uses: xmake-io/github-action-setup-xmake@v1
+        with:
+          xmake-version: latest
       - name: install
         run: |
           xmake config -m relase ${{ matrix.arch }}

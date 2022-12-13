@@ -26,7 +26,7 @@ jobs:
 
       - name: build in debug
         run: |
-          xmake config -m debug ${{ matrix.arch }}
+          xmake config -m debug
           xmake build mock
           xmake r mock
               
@@ -40,6 +40,10 @@ jobs:
 
     needs: build_mock
     steps:
+      - uses: actions/checkout@v3
+      - uses: xmake-io/github-action-setup-xmake@v1
+        with:
+          xmake-version: latest
       - name: build in dfx
         run: |
           xmake config -m relase ${{ matrix.arch }}
@@ -71,7 +75,7 @@ jobs:
 
       - name: build in debug
         run: |
-          xmake config -m debug ${{ matrix.arch }}
+          xmake config -m debug
           xmake build
 
   build_install:
@@ -85,6 +89,10 @@ jobs:
     needs: build_debug
 
     steps:
+      - uses: actions/checkout@v3
+      - uses: xmake-io/github-action-setup-xmake@v1
+        with:
+          xmake-version: latest
       - name: install
         run: |
           xmake config -m relase ${{ matrix.arch }}
