@@ -3,16 +3,18 @@ on:
   push:
     branches:    
       - master
+
   pull_request:
     branches:
       - master
 
 jobs:
-  build_windows:
-    name: build_and_test in windows
+  build_mock:
+    name: mock
     strategy:
       matrix:
         os: [windows-latest]
+        arch: [x64, x86]
 
     runs-on: ${{ matrix.os }}
 
@@ -27,15 +29,24 @@ jobs:
 
       - name: build in debug
         run: |
-          xmake config -m debug
-          xmake build
+          xmake config -m debug ${{ matrix.arch }}
           xmake build mock
           xmake r mock
+              
+  build_dfx:
+    name: dfx
+    strategy:
+      matrix:
+        os: [windows-latest]
+        arch: [x64, x86]
 
+    runs-on: ${{ matrix.os }}
+
+    needs: build_mock
+    steps:
       - name: build in dfx
         run: |
-          xmake config -m relase
-          xmake
+          xmake config -m relase ${{ matrix.arch }}
           xmake build unit_test
           xmake r unit_test
           xmake build bench
@@ -43,8 +54,47 @@ jobs:
           xmake build meta
           xmake r meta
 
+ build_debug:
+    name: debug
+    strategy:
+      matrix:
+        os: [windows-latest]
+        arch: [x64, x86]
+
+    runs-on: ${{ matrix.os }}
+
+    needs: [build_mock, build_dfx]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: use xmake
+        uses: xmake-io/github-action-setup-xmake@v1
+        with:
+          xmake-version: latest
+
+      - name: build in debug
+        run: |
+          xmake config -m debug ${{ matrix.arch }}
+          xmake build
+
+  build_install:
+    name: install
+    strategy:
+      matrix:
+        os: [windows-latest]
+        arch: [x64, x86]
+
+    runs-on: ${{ matrix.os }}
+
+    needs: build_debug
+
+    steps:
       - name: install
         run: |
+          xmake config -m relase ${{ matrix.arch }}
+          xmake
           xmake install -a
       # - name: Archive code coverage results
       #   uses: actions/upload-artifact@v3

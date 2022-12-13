@@ -4,7 +4,7 @@ option("with_lib")
     end
     add_deps("atom_math")
 
-target("unitest")
+target("unit_test")
     set_kind("binary")
     set_default(false)
     set_options("with_lib")
