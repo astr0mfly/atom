@@ -51,7 +51,7 @@ jobs:
           xmake build meta
           xmake r meta
 
- build_debug:
+  build_debug:
     name: debug
     strategy:
       matrix:
