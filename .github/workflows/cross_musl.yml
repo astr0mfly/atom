@@ -1,4 +1,4 @@
-name: linux
+name: cross(musl)
 on:
   push:
     branches:    

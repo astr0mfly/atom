@@ -100,7 +100,7 @@ jobs:
         run: |
           xmake config -m relase ${{ matrix.arch }}
           xmake
-          xmake install -a
+          xmake install
       # - name: Archive code coverage results
       #   uses: actions/upload-artifact@v3
       #   with:
