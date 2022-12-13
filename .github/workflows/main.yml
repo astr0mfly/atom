@@ -1,11 +1,29 @@
-- name: setup xmake
-  # You may pin to the exact commit or the version.
-  # uses: xmake-io/github-action-setup-xmake@9b727acdccf5e41bdf2712934983855d8ce146de
-  uses: xmake-io/github-action-setup-xmake@v1
-  with:
-    # The version to use. Should be a semver range or 'latest'. Or use [{repository}#]branch@{branch_name} to select a branch.
-    xmake-version: # default is latest
-    # Directory to cache xmake in. This folder will go under $GITHUB_HOME (I.e. build dir) and be cached using @actions/cache.
-    actions-cache-folder: # optional, default is 
-    # The actions cache key.
-    actions-cache-key: # optional, default is 
+name: atom with xmake
+on: push
+
+jobs:
+  my-job:
+    name: build in linux
+    runs-on: ubuntu-latest
+    steps:
+      # You may pin to the exact commit or the version.
+      # uses: xmake-io/github-action-setup-xmake@9b727acdccf5e41bdf2712934983855d8ce146de
+      - name: use xmake
+        uses: xmake-io/github-action-setup-xmake@v1
+        with:
+          # The version to use. Should be a semver range or 'latest'. Or use [{repository}#]branch@{branch_name} to select a branch.
+          xmake-version: latest
+      - run: |
+          xmake config -m debug
+          xmake build
+          xmake build mock; xmake r mock
+      - run: |
+          xmake config -m relase
+          xmake
+          xmake build unit_test
+          xmake build bench
+          xmake build meta
+          xmake r unit_test
+          xmake r bench
+          xmake r meta
+      - run: xmake install -a
