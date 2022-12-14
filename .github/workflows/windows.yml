@@ -68,11 +68,12 @@ jobs:
         with:
           xmake-version: latest
 
-      - name: build in dfx
+      - name: build unit_test
         run: |
           xmake config -m release ${{ matrix.arch }}
           xmake build unit_test
           xmake r unit_test
+      - name: build meta
         run: |
           xmake build meta
           xmake r meta
