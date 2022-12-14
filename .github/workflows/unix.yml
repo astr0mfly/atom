@@ -70,10 +70,10 @@ jobs:
           xmake config -m release
           xmake build unit_test
           xmake r unit_test
-      - name: build meta
-        run: |
-          xmake build meta
-          xmake r meta
+      # - name: build meta
+      #   run: |
+      #     xmake build meta
+      #     xmake r meta
 
   build_bench:
     name: bench
