@@ -6,7 +6,27 @@ on:
   pull_request:
     branches:
       - master
+
 jobs:
+  build_debug:
+    name: debug
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: use xmake
+        uses: xmake-io/github-action-setup-xmake@v1
+        with:
+          xmake-version: latest
+
+      - name: build in debug
+        run: |
+          xmake config -m debug
+          xmake build
+
   build_mock:
     name: mock
     strategy:
@@ -14,7 +34,7 @@ jobs:
         os: [ubuntu-latest]
 
     runs-on: ${{ matrix.os }}
-
+    needs: build_debug
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -38,45 +58,24 @@ jobs:
 
     runs-on: ${{ matrix.os }}
 
-    needs: build_mock
+    needs: build_debug
     steps:
       - uses: actions/checkout@v3
       - uses: xmake-io/github-action-setup-xmake@v1
         with:
           xmake-version: latest
+
       - name: build in dfx
         run: |
-          xmake config -m relase ${{ matrix.arch }}
+          xmake config -m release
           xmake build unit_test
           xmake r unit_test
-          xmake build bench
-          xmake r bench
+        run: |
           xmake build meta
           xmake r meta
-
-  build_debug:
-    name: debug
-    strategy:
-      matrix:
-        os: [ubuntu-latest]
-
-    runs-on: ${{ matrix.os }}
-
-    needs: [build_mock, build_dfx]
-
-    steps:
-      - name: use xmake
-        uses: xmake-io/github-action-setup-xmake@v1
-        with:
-          xmake-version: latest
-
-      - name: build in debug
-        run: |
-          xmake config -m debug
-          xmake build
-
-  build_install:
-    name: install
+          
+  build_bench:
+    name: bench
     strategy:
       matrix:
         os: [ubuntu-latest]
@@ -90,9 +89,31 @@ jobs:
       - uses: xmake-io/github-action-setup-xmake@v1
         with:
           xmake-version: latest
+
+      - name: build in bench
+        run: |
+          xmake config -m release
+          xmake build bench
+          xmake r bench
+
+  build_install:
+    name: install
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+
+    runs-on: ${{ matrix.os }}
+
+    needs: [build_bench, build_dfx]
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: xmake-io/github-action-setup-xmake@v1
+        with:
+          xmake-version: latest
       - name: install
         run: |
-          xmake config -m relase
+          xmake config -m release
           xmake
           xmake install -o ./output
           tree ./output
