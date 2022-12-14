@@ -29,25 +29,25 @@ FIXTURE(TestTearDown)
     };
 };
 
-FIXTURE(TestWithSetUpAndTearDown)
-{
-    SETUP_BEGIN()
-        using Num = __int(2);
-    SETUP_END()
+// FIXTURE(TestWithSetUpAndTearDown)
+// {
+//     SETUP_BEGIN()
+//         using Num = __int(2);
+//     SETUP_END()
 
-    TEARDOWN_BEGIN()
-        using Expected = __int(4);
-        using Result = __test_invoke(Op, __test_refer(Num), __test_refer(Num));
-        ASSERT_EQ(Result, Expected);
-    TEARDOWN_END()
+//     TEARDOWN_BEGIN()
+//         using Expected = __int(4);
+//         using Result = __test_invoke(Op, __test_refer(Num), __test_refer(Num));
+//         ASSERT_EQ(Result, Expected);
+//     TEARDOWN_END()
 
-    TEST("test case 1 with the same setup and teardown")
-    {
-        __func_forward_2(Op, __add(_1, _2));
-    };
+//     TEST("test case 1 with the same setup and teardown")
+//     {
+//         __func_forward_2(Op, __add(_1, _2));
+//     };
 
-    TEST("test case 2 with the same setup and teardown")
-    {
-        __func_forward_2(Op, __mul(_1, _2));
-    };
-};
+//     TEST("test case 2 with the same setup and teardown")
+//     {
+//         __func_forward_2(Op, __mul(_1, _2));
+//     };
+// };
